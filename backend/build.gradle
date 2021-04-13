@@ -1,0 +1,114 @@
+buildscript {
+	ext {
+		generatedSources = "$rootDir/build/generated-sources"
+
+		springBootVersion = "2.4.3"
+		springDependencyManagementVersion = "1.0.11.RELEASE"
+		kotlinVersion = "1.4.30"
+		openApiGeneratorVersion = "5.0.1"
+		javaxValidationVersion = "2.0.1.Final"
+		loremVersion = "2.1"
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+}
+plugins {
+	id "org.springframework.boot" version "$springBootVersion"
+	id "io.spring.dependency-management" version "$springDependencyManagementVersion"
+	id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+	id "org.jetbrains.kotlin.plugin.spring" version "$kotlinVersion"
+	id "org.openapi.generator" version "$openApiGeneratorVersion"
+	id "idea"
+}
+
+group = "no.knowit.kirc.backend"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_11
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.springframework.boot:spring-boot-starter-json")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("javax.validation:validation-api")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("com.thedeanda:lorem:$loremVersion")
+	implementation("org.thymeleaf:thymeleaf")
+	implementation("org.thymeleaf:thymeleaf-spring5")
+}
+
+test { useJUnitPlatform() }
+clean.doFirst { delete("$generatedSources") }
+
+task generateMessagesSpec(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+	validateSpec = true
+	inputSpec = "messages.yml"
+	generatorName = "kotlin-spring"
+	outputDir = "$generatedSources/openapi/messages"
+	modelPackage = "no.knowit.kirc.api"
+	apiPackage = "no.knowit.kirc.api"
+	ignoreFileOverride = ".openapi-generator-ignore"
+	configOptions = [
+			enumPropertyNaming: 'UPPERCASE',
+			interfaceOnly     : 'false',
+			gradleBuildFile   : 'false',
+			title             : 'Products',
+			exceptionHandler  : 'false',
+			useTags           : 'true',
+			serviceInterface  : 'true',
+			serializableModel : 'false'
+	]
+	typeMappings = [
+			'java.time.OffsetDateTime': 'java.time.ZonedDateTime'
+	]
+	additionalProperties = [
+			openApiNullable: "false",
+			removeEnumValuePrefix: "false"
+
+	]
+}
+
+idea {
+	module {
+		outputDir file("$rootDir/build/classes/main")
+		testOutputDir file("$rootDir/build/classes/test")
+		generatedSourceDirs += file("$generatedSources/openapi/messages/src/main/kotlin")
+	}
+}
+sourceSets {
+	main {
+		kotlin {
+			srcDirs "$generatedSources/openapi/messages/src/main/kotlin"
+		}
+	}
+}
+
+task deleteFiles(type: Delete) {
+	delete "$generatedSources/openapi/messages/src/main/kotlin/no/knowit/kirc/api/ApiUtil.kt"
+	delete "$generatedSources/openapi/messages/src/main/kotlin/org/openapitools/Application.kt"
+}
+deleteFiles.dependsOn generateMessagesSpec
+
+compileKotlin {
+	dependsOn tasks.deleteFiles
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "11"
+	}
+}

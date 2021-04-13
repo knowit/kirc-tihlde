@@ -1,0 +1,39 @@
+org: tofagerl
+app: kirc-processor
+service: kirc-processor
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  region: "eu-central-1"
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetResourcePolicy
+            - secretsmanager:GetSecretValue
+            - secretsmanager:DescribeSecret
+            - secretsmanager:ListSecretVersionIds
+          Resource: arn:aws:secretsmanager:eu-central-1:030483651510:secret:kirc-documentdb-credentials-i3VU8S
+        - Effect: Allow
+          Action:
+            - sqs:ReadMessage
+          Resource: arn:aws:sqs:eu-central-1:030483651510:message_queue.fifo
+
+functions:
+  processor:
+    vpc:
+      securityGroupIds:
+        - sg-a59789d4
+      subnetIds:
+        - subnet-5914a415
+    handler: processor.processor
+    events:
+      - sqs:
+          batchSize: 1
+          arn: arn:aws:sqs:eu-central-1:030483651510:message_queue.fifo

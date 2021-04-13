@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: KIRC
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /messages:
+    parameters: []
+    get:
+      summary: Get all messages from the server
+      operationId: get-messages
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+              examples:
+                Boring Message:
+                  value:
+                    id: 6c7c2d07-5add-4f5e-893f-f81ab947edc9
+                    nickname: LIN
+                    timestamp: '2019-08-24T14:15:22Z'
+                    message: 'Jeg er avdelingsleder i Knowit, og nå må alt dette tullet om "skycomputing" ta slutt!  Da jeg var ung var datamaskinene montert i datasentre der de hører hjemme!'
+                    style: 'font-weight: bold;'
+      tags:
+        - messages
+components:
+  schemas:
+    Message:
+      title: Message
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 6c7c2d07-5add-4f5e-893f-f81ab947edc9
+        nickname:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO_8601 formatted
+        message:
+          type: string
+        style:
+          type: string
+          description: Optional CSS style properties set in addition to the defaults. Overriding default style is possible.
+      required:
+        - id
+        - timestamp
+        - message
+      x-examples:
+        Boring message:
+          id: 6c7c2d07-5add-4f5e-893f-f81ab947edc9
+          nickname: LIN
+          timestamp: '2019-08-24T14:15:22Z'
+          message: 'Jeg er avdelingsleder i Knowit, og nå må alt dette tullet om "skycomputing" ta slutt! Når jeg var ung var datamaskinene montert i datasentre der de hører hjemme!'
+          style: 'font-weight: bold;'

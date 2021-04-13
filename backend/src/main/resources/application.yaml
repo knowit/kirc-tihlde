@@ -1,0 +1,23 @@
+logging:
+  level:
+    web: DEBUG
+    org:
+      springframework:
+        web:
+          servlet:
+            mvc:
+              method:
+                annotation:
+                  RequestMappingHandlerMapping: TRACE
+
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+spring:
+  data:
+    mongodb:
+      uri: mongodb://knowit-irc-messages.cluster-ci2nclm2m805.eu-central-1.docdb.amazonaws.com:27017/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
+      database: Message
+      username: kirc
+      password: 
