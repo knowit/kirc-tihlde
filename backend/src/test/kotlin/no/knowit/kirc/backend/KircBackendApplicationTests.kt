@@ -1,4 +1,4 @@
-package no.knowit.kirc.backend.kircbackend
+package no.knowit.kirc.backend
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

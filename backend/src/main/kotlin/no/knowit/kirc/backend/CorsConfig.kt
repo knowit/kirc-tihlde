@@ -1,4 +1,4 @@
-package no.knowit.kirc.backend.kircbackend
+package no.knowit.kirc.backend
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer

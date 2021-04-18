@@ -1,4 +1,4 @@
-package no.knowit.kirc.backend.kircbackend
+package no.knowit.kirc.backend
 
 import no.knowit.kirc.api.Message
 import no.knowit.kirc.api.MessagesApiService

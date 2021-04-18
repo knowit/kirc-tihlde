@@ -1,4 +1,4 @@
-package no.knowit.kirc.backend.kircbackend
+package no.knowit.kirc.backend
 
 import com.thedeanda.lorem.Lorem
 import com.thedeanda.lorem.LoremIpsum
