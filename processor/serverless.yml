@@ -15,23 +15,17 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - secretsmanager:GetResourcePolicy
-            - secretsmanager:GetSecretValue
-            - secretsmanager:DescribeSecret
-            - secretsmanager:ListSecretVersionIds
-          Resource: arn:aws:secretsmanager:eu-central-1:030483651510:secret:kirc-documentdb-credentials-i3VU8S
-        - Effect: Allow
-          Action:
             - sqs:ReadMessage
           Resource: arn:aws:sqs:eu-central-1:030483651510:message_queue.fifo
-
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Query
+            - dynamodb:UpdateItem
+            - dynamodb:BatchWriteItem
+          Resource: arn:aws:dynamodb:eu-central-1:030483651510:table/kirc
 functions:
   processor:
-    vpc:
-      securityGroupIds:
-        - sg-a59789d4
-      subnetIds:
-        - subnet-5914a415
     handler: processor.processor
     events:
       - sqs:
