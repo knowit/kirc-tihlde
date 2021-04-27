@@ -17,7 +17,7 @@ exports.sendMessage = async function (message) {
         reject(err.message)
       } else {
         console.info('Saved message', message.id)
-        console.debug("data", data)
+        console.debug('data', data)
         resolve('ok')
       }
     })
@@ -29,7 +29,11 @@ function formatMessage(message) {
   object.id = { S: message.id }
   object.message = { S: message.message }
   object.timestamp = { S: message.timestamp }
-  object.nickname = { S: message.nickname }
-  object.style = { S: message.style }
+  if (message.nickname != null && message.nickname.length > 0) {
+    object.nickname = { S: message.nickname }
+  }
+  if (message.style != null && message.style.length > 0) {
+    object.style = { S: message.style }
+  }
   return object
 }
