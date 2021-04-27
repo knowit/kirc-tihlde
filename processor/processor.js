@@ -13,7 +13,7 @@ const processMessage = function (messageAsString) {
   const message = JSON.parse(messageAsString)
   return {
     message: message.message,
-    timestamp: new Date().toISOString,
+    timestamp: new Date().toISOString(),
     id: message.id,
     nickname: message.nickname,
     style: message.style,
