@@ -4,8 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-boto3 = "*"
-moto = {version = "==1.3.16.dev184", extras = ["all"]}
-pytest = "*"
+requests = "*"
 
 [dev-packages]
+

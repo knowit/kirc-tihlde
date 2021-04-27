@@ -1,18 +1,11 @@
-import boto3
-from consts import REGION, QUEUE_NAME, MESSAGE_GROUP_ID
 from datetime import datetime, timezone
 import uuid
 import json
-
-def send_queue_message(message: str):
-    client = boto3.client('sqs', REGION)
-    qurl = client.get_queue_url(QueueName=QUEUE_NAME)["QueueUrl"]
-    response = client.send_message(QueueUrl=qurl, MessageBody=message, MessageGroupId=MESSAGE_GROUP_ID)
-    return response
+import requests
 
 
 def main():
-    print("Velkommen til verdens enkleste SQS-klient.")
+    print("Velkommen til verdens enkleste meldingsklient.")
     print("Klienten kan avsluttes når som helst ved å holde inne CTRL + C.")
     while True:
         print()
@@ -25,7 +18,7 @@ def main():
             "id": id, 
             "timestamp": timestamp, 
             }
-        send_queue_message(json.dumps(msg))
+        resp = requests.post('https://5wjbztusyb.execute-api.eu-central-1.amazonaws.com/dev/messages', json=msg)
         print("Melding sendt!")
         
 if __name__ == '__main__':
