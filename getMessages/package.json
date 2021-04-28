@@ -1,0 +1,10 @@
+{
+  "name": "kirc-processor",
+  "version": "1.0.0",
+  "description": "Processes messages on queue and saves them to MongoDB",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.885.0"
+  }
+}
