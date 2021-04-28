@@ -20,7 +20,7 @@ def main():
             id = str(uuid.uuid4())
             timestamp = datetime.now(timezone.utc).astimezone().isoformat()
             msg = {
-                "message": user_input, 
+                "message": "".join(words[1:]), 
                 "id": id, 
                 "timestamp": timestamp, 
                 "style": json.dumps(style), 
