@@ -15,7 +15,10 @@ provider:
         - Effect: Allow
           Action: sqs:SendMessage
           Resource: arn:aws:sqs:eu-central-1:030483651510:message_queue.fifo
-
+        - Effect: Allow
+          Action:
+            - dynamodb:Scan
+          Resource: arn:aws:dynamodb:eu-central-1:030483651510:table/kirc
 functions:
   send-message:
     environment: 
@@ -25,4 +28,17 @@ functions:
       - http:
           path: /messages
           method: post
+  get-messages:
+    handler: endpoint.get
+    events:
+      - http:
+          path: /messages
+          method: get
+  get-messages-since:
+    handler: endpoint.getSince
+    events:
+      - http:
+          path: /messages?from=${ISOTIME}
+          method: get
+  
 
