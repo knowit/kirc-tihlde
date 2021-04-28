@@ -13,10 +13,20 @@ def main():
         user_input = input()
         id = str(uuid.uuid4())
         timestamp = datetime.now(timezone.utc).astimezone().isoformat()
+        print("Legg til bakgrunnsfarge på meldingen din:")
+        background = input()
+        print("Legg til font-style (italic, bold, oblique osv...)")
+        fontStyle = input()
+
+
+
+        stil = f"background-color: {background}; font-style: {fontStyle};"
+        # + background + "; " fontStyle}
         msg = {
             "message": user_input, 
             "id": id, 
             "timestamp": timestamp, 
+            "style": stil,
             }
         resp = requests.post('https://5wjbztusyb.execute-api.eu-central-1.amazonaws.com/dev/messages', json=msg)
         print("Melding sendt!")
