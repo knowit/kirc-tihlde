@@ -1,4 +1,4 @@
-org: tofagerl
+org: henningwold
 app: kirc-endpoint
 service: kirc-endpoint
 
@@ -15,6 +15,14 @@ provider:
         - Effect: Allow
           Action: sqs:SendMessage
           Resource: arn:aws:sqs:eu-central-1:030483651510:message_queue.fifo
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:BatchGetItem
+            - dynamodb:Scan
+            - dynamodb:Query
+            - dynamodb:ConditionCheckItem
+          Resource: arn:aws:dynamodb:eu-central-1:030483651510:table/kirc
 
 functions:
   send-message:
@@ -25,4 +33,11 @@ functions:
       - http:
           path: /messages
           method: post
-
+  get-messages:
+    environment:
+      TABLE_NAME: kirc
+    handler: endpoint.getMessages
+    events:
+      - http:
+          path: /messages
+          method: get
