@@ -11,12 +11,17 @@ async function processor(event, context) {
 
 const processMessage = function (messageAsString) {
   const message = JSON.parse(messageAsString)
+  const style = JSON.parse(message.style)
+  const styleStr = Object.keys(style).map(key => {
+    styleStr += `${key}: ${style[key]};`
+  }).join(' ')
+
   return {
     message: message.message,
     timestamp: new Date().toISOString(),
     id: message.id,
     nickname: message.nickname,
-    style: message.style,
+    style: styleStr,
   }
 }
 
