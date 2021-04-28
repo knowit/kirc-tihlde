@@ -13,9 +13,10 @@ def main():
         words = user_input.split(' ')
         command = words[0]
         
+        print("Skriv \'send <melding>\' og trykk ENTER for å sende en melding. Skriv \'style <key> <value>\' for å style fremtidige meldinger")
+
         if command == 'send':
             print()
-            #print("Skriv inn meldingen du ønsker å sende til køen. For at meldingen faktisk skal bli sendt må du trykke på enter-tasten.")
             id = str(uuid.uuid4())
             timestamp = datetime.now(timezone.utc).astimezone().isoformat()
             msg = {
@@ -28,6 +29,9 @@ def main():
             print("Melding sendt!")
         elif command == 'style' and len(words) >= 3:
             style[words[1]] = " ".join(words[2:])
+            print(words[1], 'satt til', words[2])
+        else:
+            print('Ukjent kommando! Prøv igjen. Husk å skrive \'send\' for å sende en melding, eller \'style\' for å style meldingen')
 
         
 if __name__ == '__main__':
