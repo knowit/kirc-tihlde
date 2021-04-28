@@ -1,0 +1,26 @@
+org: sverrejb
+app: kirc-getmessage
+service: kirc-getmessage
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  region: "eu-central-1"
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  stage: dev
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Scan
+          Resource: arn:aws:dynamodb:eu-central-1:030483651510:table/kirc
+functions:
+  getmessages:
+    handler: getmessages.getmessages
+    events:
+      - httpApi:
+          path: /messages
+          method: GET
