@@ -9,18 +9,18 @@ def main():
     print("Velkommen til verdens enkleste meldingsklient.")
     print("Klienten kan avsluttes når som helst ved å holde inne CTRL + C.")
     while True:
+        print("Skriv \'send <melding>\' og trykk ENTER for å sende en melding. Skriv \'style <key> <value>\' for å style fremtidige meldinger")
+
         user_input = input()
         words = user_input.split(' ')
         command = words[0]
-        
-        print("Skriv \'send <melding>\' og trykk ENTER for å sende en melding. Skriv \'style <key> <value>\' for å style fremtidige meldinger")
-
+    
         if command == 'send':
             print()
             id = str(uuid.uuid4())
             timestamp = datetime.now(timezone.utc).astimezone().isoformat()
             msg = {
-                "message": "".join(words[1:]), 
+                "message": " ".join(words[1:]), 
                 "id": id, 
                 "timestamp": timestamp, 
                 "style": json.dumps(style), 
